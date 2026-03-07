@@ -7,6 +7,8 @@ pub mod vga;
 pub use vga::*;
 pub mod gdt;
 pub use gdt::*;
+pub mod idt;
+pub use idt::*;
 pub mod macros;
 use core::panic::PanicInfo;
 
@@ -20,8 +22,10 @@ pub extern "C" fn kmain() -> ! {
     for i in 0..30 {
         println!("This is line number {}", i);
     }
-    init();
+    gdt::init();
     println!("GDT Initialized!");
+    idt::init();
+    println!("IDT Initialized!");
 
     loop {}
 }
