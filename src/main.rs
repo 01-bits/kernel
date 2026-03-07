@@ -5,6 +5,8 @@ pub mod spin;
 pub use spin::*;
 pub mod vga;
 pub use vga::*;
+pub mod gdt;
+pub use gdt::*;
 pub mod macros;
 use core::panic::PanicInfo;
 
@@ -18,6 +20,8 @@ pub extern "C" fn kmain() -> ! {
     for i in 0..30 {
         println!("This is line number {}", i);
     }
+    init();
+    println!("GDT Initialized!");
 
     loop {}
 }
