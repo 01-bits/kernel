@@ -19,8 +19,8 @@ start:
     mov dh, 0x00    ; Head 0
     mov cl, 0x02    ; Start at sector 2
     mov bx, 0x7e00  ; Load it right after the bootloader
-    int 0x13
-    
+    int 0x13    
+
     ; Print 'B' 
     mov ah, 0x0e
     mov al, 'B'
