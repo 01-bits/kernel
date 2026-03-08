@@ -7,7 +7,8 @@ SECTIONS
 
     .boot :
     {
-        *(.boot_entry)
+        *(.boot)     
+        *(.text)     
     }
 
     /* Fill to the end of the first sector */
@@ -21,11 +22,11 @@ SECTIONS
     . = 0x7e00;
     .kernel : AT(0x7e00)
     {
-        *(.text .text.*)
-        *(.rodata .rodata.*)
-        *(.data .data.*)
-        *(.bss .bss.*)
-        *(COMMON)
+        *(.text)       
+        *(.text.*)     
+        *(.rodata*)
+        *(.data*)
+        *(.bss*)
     }
 
     /DISCARD/ : { *(.comment) *(.eh_frame) *(.note*) }

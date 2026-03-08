@@ -1,5 +1,5 @@
 [BITS 16]
-section .boot
+section .boot_entry
 global start
 extern kmain
 
@@ -104,6 +104,8 @@ gdt64_descriptor:
 [BITS 64]
 LongModeMain:
     mov rax, 0x0a340a36
-    mov [0xb8004], rax  
+    mov [0xb8004], rax
+    mov rsp, 0x9000
+    and rsp, -16
     call kmain
     hlt

@@ -17,28 +17,49 @@ static HELLO: &[u8] = b"Hello Worldddd\n";
 
 #[unsafe(no_mangle)]
 pub extern "C" fn kmain() -> ! {
-    unsafe { core::arch::asm!("cli"); }
-    // Write a White '1' to indicate: Entry reached
-    unsafe { *(0xb8000 as *mut u16) = 0x0f31; }
+    unsafe {
+        // Mark entry
+        *(0xb8000 as *mut u16) = 0x0f31; // '1'
+        core::arch::asm!("cli");
+    }
+
+    unsafe {
+        *(0xb8002 as *mut u16) = 0x0f41;
+    } // 'A'
 
     let x = 5;
     if x == 5 {
-         unsafe { *(0xb8002 as *mut u16) = 0x0f41; } // See 'A'
+        unsafe {
+            *(0xb8004 as *mut u16) = 0x0f42;
+        } // 'B'
     }
 
-    // gdt::init();
-    // Write a White '2' to indicate: GDT done
-    // unsafe { *(0xb8002 as *mut u16) = 0x0f32; }
+    unsafe {
+        *(0xb8006 as *mut u16) = 0x0f43;
+    } // 'C' - Before GDT init
+
+    gdt::init();
+
+    unsafe {
+        *(0xb8008 as *mut u16) = 0x0f32;
+    } // '2' - After GDT init
+
+    unsafe {
+        *(0xb800a as *mut u16) = 0x0f49;
+    } // 'I' - Before IDT init
 
     idt::init();
-    // // Write a White '3' to indicate: IDT done
-    unsafe { *(0xb8004 as *mut u16) = 0x0f33; }
 
-    // TRIGGER THE INTERRUPT
-    // unsafe { core::arch::asm!("int3"); }
+    unsafe {
+        *(0xb800c as *mut u16) = 0x0f33;
+    } // '3' - After IDT init
 
-    // // Write a White '4' to indicate: Returned from Interrupt
-    // unsafe { *(0xb8006 as *mut u16) = 0x0f34; }
+    // Write SUCCESS message
+    unsafe {
+        *(0xb800e as *mut u16) = 0x0f53; // S
+        *(0xb8010 as *mut u16) = 0x0f4f; // O
+        *(0xb8012 as *mut u16) = 0x0f4b; // K
+    }
 
     loop {}
 }

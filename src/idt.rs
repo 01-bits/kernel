@@ -1,4 +1,4 @@
-use core::{arch::asm, ptr::addr_of};
+use core::{arch::asm, mem::size_of, ptr::addr_of};
 
 #[derive(Debug)]
 #[repr(C)]
@@ -56,30 +56,15 @@ pub struct IdtPtr {
 static mut IDT: [IdtEntry; 256] = [IdtEntry::empty(); 256];
 
 pub fn init() {
-    // unsafe {
-    //     IDT[3].set_handler(breakpoint_handler as *const () as u64);
-    //     IDT[8].set_handler(double_fault_handler as *const () as u64);
-    //     let ptr = IdtPtr {
-    //         limit: size_of::<[IdtEntry; 256]>() as u16 - 1,
-    //         base: addr_of!(IDT) as u64,
-    //     };
-
-    //     asm!("lidt [{}]", in(reg) &ptr);
-    // }
     unsafe {
-        let mut local_idt = [IdtEntry::empty(); 16];
-
-        local_idt[3].set_handler(breakpoint_handler as u64);
-
+        // Load the IDT (currently empty, no handlers set)
+        // This allows the CPU to use the IDT descriptor table
         let ptr = IdtPtr {
-            limit: (16 * 16 - 1) as u16,
-            base: (&local_idt as *const _) as u64,
+            limit: (size_of::<[IdtEntry; 256]>() - 1) as u16,
+            base: addr_of!(IDT) as u64,
         };
 
         asm!("lidt [{}]", in(reg) &ptr);
-
-        // Write '3' to screen directly from here to see if we survived
-        *(0xb8004 as *mut u16) = 0x0f33;
     }
 }
 
