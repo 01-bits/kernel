@@ -61,6 +61,10 @@ pub extern "C" fn kmain() -> ! {
         *(0xb8012 as *mut u16) = 0x0f4b; // K
     }
 
+    // unsafe {
+    //     core::arch::asm!("int3")
+    // }
+
     loop {}
 }
 

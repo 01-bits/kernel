@@ -59,12 +59,18 @@ pub fn init() {
     unsafe {
         // Load the IDT (currently empty, no handlers set)
         // This allows the CPU to use the IDT descriptor table
+        // IDT[3].set_handler(breakpoint_handler as *const () as u64);
+        // IDT[8].set_handler(double_fault_handler as *const () as u64);
+        let handler = breakpoint_handler as u64;
+        IDT[3].set_handler(handler);
+
         let ptr = IdtPtr {
             limit: (size_of::<[IdtEntry; 256]>() - 1) as u16,
             base: addr_of!(IDT) as u64,
         };
 
         asm!("lidt [{}]", in(reg) &ptr);
+        asm!("int 3");
     }
 }
 
