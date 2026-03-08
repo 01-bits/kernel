@@ -1,4 +1,4 @@
-use core::arch::asm;
+use core::{arch::asm, ptr::addr_of};
 
 /// This module defines the Global Descriptor Table (GDT) for the kernel.
 /// The GDT is a data structure used by x86 processors to define the characteristics of the various memory segments used in protected mode.
@@ -20,60 +20,55 @@ impl GdtEntry {
     /// The base address and limit are set to zero for simplicity, as they are not used in this basic GDT setup.
     pub const fn new(access: u8, flags: u8) -> Self {
         GdtEntry {
-            limit_low: 0,
+            limit_low: 0xFFFF,
             base_low: 0,
             base_mid: 0,
             access,
-            limit_high_flags: flags & 0xF0, // Only the high 4 bits are flags
+            limit_high_flags: 0x0F | (flags & 0xF0), // Only the high 4 bits are flags
             base_high: 0,
         }
     }
 }
 
-/// The GDT pointer structure, which is used to load the GDT into the CPU.
-/// It contains the size of the GDT (limit) and the base address where the GDT is located in memory.
-/// The `repr(C, packed)` attribute ensures that the structure is laid out in memory without any padding,
-/// which is crucial for the CPU to correctly interpret the GDT pointer
-#[repr(C, packed)]
-pub struct GdtPtr {
-    limit: u16,
-    base: u64,
-}
+#[repr(C, align(16))]
+pub struct GdtTable([GdtEntry; 3]);
 
-static GDT: [GdtEntry; 3] = [
+pub static mut GDT: GdtTable = GdtTable([
     GdtEntry::new(0, 0),       // Null descriptor (Required by x86 architecture)
     GdtEntry::new(0x9A, 0x20), // Kernel Code segment (Executable, Readable, Accessed)
     GdtEntry::new(0x92, 0x00), // Kernel Data segment (Readable, Accessed)
-];
+]);
 
-pub fn init() {
-    let ptr = GdtPtr {
-        limit: size_of::<[GdtEntry; 3]>() as u16 - 1,
-        base: &GDT as *const _ as u64,
-    };
-
-    unsafe {
-        load_gdt(&ptr);
-    }
+#[repr(C, packed(2))] // Forces the 2-byte limit and 8-byte base to sit tight
+pub struct GdtDescriptor {
+    pub limit: u16,
+    pub base: u64,
 }
 
-pub unsafe fn load_gdt(ptr: &GdtPtr) {
+pub fn init() {
     unsafe {
+        // Create the 10-byte GDT descriptor manually on the stack
+        let mut gdt_ptr = [0u8; 10];
+        let limit = (core::mem::size_of::<GdtTable>() - 1) as u16;
+        let base = addr_of!(GDT) as u64;
+
+        gdt_ptr[0..2].copy_from_slice(&limit.to_le_bytes());
+        gdt_ptr[2..10].copy_from_slice(&base.to_le_bytes());
+
         asm!(
-            "lgdt [{0}]",
-            "push 0x08",                 // Push the new Code Segment selector (8 bytes in)
-            "lea {tmp}, [2f]",           // Load the address of the label '2'
-            "push {tmp}",                // Push that address
-            "retfq",                     // This pops RIP then CS. CPU jumps to '1:'
+            "lgdt [{0}]",            // Load from our manual byte array
+            "push 0x08",             // Code selector
+            "lea rax, [2f]",
+            "push rax",
+            "retfq",                 // If the GDT at 'base' is valid, this WILL work
             "2:",
-            "mov ax, 0x10",              // 0x10 is the Data Segment (16 bytes in)
+            "mov ax, 0x10",
             "mov ds, ax",
             "mov es, ax",
-            "mov fs, ax",
-            "mov gs, ax",
             "mov ss, ax",
-            in(reg) ptr,
-            tmp = out(reg) _,
+            in(reg) &gdt_ptr,
+            out("rax") _,
+            options(nostack)
         );
     }
 }
