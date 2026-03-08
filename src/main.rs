@@ -6,8 +6,6 @@ pub mod spin;
 pub use spin::*;
 pub mod vga;
 pub use vga::*;
-pub mod gdt;
-pub use gdt::*;
 pub mod idt;
 pub use idt::*;
 pub mod macros;
@@ -38,7 +36,6 @@ pub extern "C" fn kmain() -> ! {
         *(0xb8006 as *mut u16) = 0x0f43;
     } // 'C' - Before GDT init
 
-    gdt::init();
 
     unsafe {
         *(0xb8008 as *mut u16) = 0x0f32;
@@ -50,16 +47,16 @@ pub extern "C" fn kmain() -> ! {
 
     idt::init();
 
-    unsafe {
-        *(0xb800c as *mut u16) = 0x0f33;
-    } // '3' - After IDT init
+    // unsafe {
+    //     *(0xb800c as *mut u16) = 0x0f33;
+    // } // '3' - After IDT init
 
-    // Write SUCCESS message
-    unsafe {
-        *(0xb800e as *mut u16) = 0x0f53; // S
-        *(0xb8010 as *mut u16) = 0x0f4f; // O
-        *(0xb8012 as *mut u16) = 0x0f4b; // K
-    }
+    // // Write SUCCESS message
+    // unsafe {
+    //     *(0xb800e as *mut u16) = 0x0f53; // S
+    //     *(0xb8010 as *mut u16) = 0x0f4f; // O
+    //     *(0xb8012 as *mut u16) = 0x0f4b; // K
+    // }
 
     // unsafe {
     //     core::arch::asm!("int3")
