@@ -14,7 +14,7 @@ start:
     ; --- STEP 0: LOAD RUST FROM DISK ---
     ; BIOS only loads 512 bytes. We need to load the rest!
     mov ah, 0x02    ; BIOS read sectors
-    mov al, 10      ; Read 10 sectors (5KB)
+    mov al, 60      ; Read 10 sectors (5KB)
     mov ch, 0x00    ; Cylinder 0
     mov dh, 0x00    ; Head 0
     mov cl, 0x02    ; Start at sector 2

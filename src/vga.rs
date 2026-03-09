@@ -88,6 +88,7 @@ pub static WRITER: Spinlock<VgaWriter> = Spinlock::new(VgaWriter {
     color: DEFAULT_COLOR,
 });
 
+
 #[doc(hidden)]
 pub fn _print(args: Arguments, color: u8) {
     use core::fmt::Write;
