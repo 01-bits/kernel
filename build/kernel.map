@@ -25,9 +25,9 @@ Linker script and memory map
 
                 0x0000000000007c00                . = 0x7c00
 
-.boot           0x0000000000007c00      0x13e
+.boot           0x0000000000007c00      0x13f
  *(.boot_entry)
- .boot_entry    0x0000000000007c00      0x13e build/boot.o
+ .boot_entry    0x0000000000007c00      0x13f build/boot.o
                 0x0000000000007c00                start
                 0x0000000000007dfe                . = 0x7dfe
 
@@ -88,7 +88,7 @@ Linker script and memory map
 .iplt           0x0000000000009b5f        0x0
  .iplt          0x0000000000009b5f        0x0 build/boot.o
 
-.rodata         0x0000000000009b60      0x130
+.rodata         0x0000000000009b60      0x12c
  *(.rodata .rodata.*)
  .rodata._RNvMsa_NtCsdkwDDN9ROji_4core3fmtNtB5_9Formatter3pad
                 0x0000000000009b60       0x10 target/x86_64-unknown-none/release/libkernel.a(kernel-f516bc03ffe9b977.kernel.1a6e78cceb18f4e-cgu.0.rcgu.o)
@@ -98,11 +98,11 @@ Linker script and memory map
  .rodata..Lanon.815952bc744f841e4d2e7ca7ce594118.7
                 0x0000000000009ba8       0x19 target/x86_64-unknown-none/release/libkernel.a(kernel-f516bc03ffe9b977.kernel.1a6e78cceb18f4e-cgu.0.rcgu.o)
  .rodata.str1.1
-                0x0000000000009bc1        0x4 target/x86_64-unknown-none/release/libkernel.a(kernel-f516bc03ffe9b977.kernel.1a6e78cceb18f4e-cgu.0.rcgu.o)
- .rodata.cst32  0x0000000000009bc5       0x20 target/x86_64-unknown-none/release/libkernel.a(kernel-f516bc03ffe9b977.kernel.1a6e78cceb18f4e-cgu.0.rcgu.o)
- *fill*         0x0000000000009be5        0x3 
+                0x0000000000009bc1        0x2 target/x86_64-unknown-none/release/libkernel.a(kernel-f516bc03ffe9b977.kernel.1a6e78cceb18f4e-cgu.0.rcgu.o)
+ .rodata.cst32  0x0000000000009bc3       0x20 target/x86_64-unknown-none/release/libkernel.a(kernel-f516bc03ffe9b977.kernel.1a6e78cceb18f4e-cgu.0.rcgu.o)
+ *fill*         0x0000000000009be3        0x1 
  .rodata..Lswitch.table.keyboard_handler
-                0x0000000000009be8       0xa8 target/x86_64-unknown-none/release/libkernel.a(kernel-f516bc03ffe9b977.kernel.1a6e78cceb18f4e-cgu.0.rcgu.o)
+                0x0000000000009be4       0xa8 target/x86_64-unknown-none/release/libkernel.a(kernel-f516bc03ffe9b977.kernel.1a6e78cceb18f4e-cgu.0.rcgu.o)
 
 .rela.dyn       0x0000000000009c90        0x0
  .rela.got      0x0000000000009c90        0x0 build/boot.o

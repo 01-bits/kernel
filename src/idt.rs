@@ -328,15 +328,8 @@ pub extern "x86-interrupt" fn keyboard_handler(_stack_frame: InterruptStackFrame
             };
 
             if let Some(c) = key {
-                // Use your println! or a simple character writer
-                println!("{}", c);
+                print_info!("{}", c);
             }
-            // if let Some(c) = key {
-            //     // DIRECT VGA WRITE (No Mutex, No Deadlock)
-            //     let vga_buffer = 0xb8000 as *mut u16;
-            //     // Just print at a fixed spot (e.g., Row 12, Col 0) to test
-            //     *vga_buffer.offset(12 * 80) = 0x0f00 | (c as u16);
-            // }
         }
 
         // Send End of Interrupt (EOI) to the Master PIC

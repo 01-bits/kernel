@@ -115,9 +115,15 @@ gdt64_descriptor:
 
 [BITS 64]
 LongModeMain:
-    mov rax, 0x0a340a36
-    mov [0xb8004], rax
-    mov rsp, 0xA000
+    mov ax, 0x10      ; Load Data Segment
+    mov ds, ax
+    mov es, ax
+    mov fs, ax
+    mov gs, ax
+    mov ss, ax
+
+    
+    mov rsp, 0x80000
     and rsp, -16
     call kmain
     hlt
