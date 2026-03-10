@@ -136,7 +136,7 @@
 
 use core::{arch::asm, mem::size_of, ptr::addr_of};
 
-use crate::println;
+use crate::{print_info, println};
 
 #[derive(Debug)]
 #[repr(C)]
@@ -289,15 +289,57 @@ pub unsafe fn _remap_pic() {
 #[unsafe(no_mangle)]
 pub extern "x86-interrupt" fn keyboard_handler(_stack_frame: InterruptStackFrame) {
     unsafe {
-        // Read scancode from Port 0x60
         let scancode: u8;
-        asm!("in al, 0x60", out("al") scancode);
+        core::arch::asm!("in al, 0x60", out("al") scancode);
 
-        // For now, just print the scancode hex raw so we know it works
-        print_hex_raw(scancode as u64, 10, 0);
+        // Bit 7 (0x80) is set if the key was released.
+        // We only want to print on the "Press" event.
+        if scancode & 0x80 == 0 {
+            let key = match scancode {
+                0x10 => Some('a'),
+                0x11 => Some('z'),
+                0x12 => Some('e'),
+                0x13 => Some('r'),
+                0x14 => Some('t'),
+                0x15 => Some('y'),
+                0x16 => Some('u'),
+                0x17 => Some('i'),
+                0x18 => Some('o'),
+                0x19 => Some('p'),
+                0x1E => Some('q'),
+                0x1F => Some('s'),
+                0x20 => Some('d'),
+                0x21 => Some('f'),
+                0x22 => Some('g'),
+                0x23 => Some('h'),
+                0x24 => Some('j'),
+                0x25 => Some('k'),
+                0x26 => Some('l'),
+                0x27 => Some('m'),
+                0x2C => Some('w'),
+                0x2D => Some('x'),
+                0x2E => Some('c'),
+                0x2F => Some('v'),
+                0x30 => Some('b'),
+                0x31 => Some('n'),
+                0x39 => Some(' '),  // Space
+                0x1C => Some('\n'), // Enter
+                _ => None,
+            };
 
-        // SEND EOI (End of Interrupt) to the PIC
-        // If you don't do this, the PIC will never send another interrupt!
-        asm!("out 0x20, al", in("al") 0x20u8);
+            if let Some(c) = key {
+                // Use your println! or a simple character writer
+                println!("{}", c);
+            }
+            // if let Some(c) = key {
+            //     // DIRECT VGA WRITE (No Mutex, No Deadlock)
+            //     let vga_buffer = 0xb8000 as *mut u16;
+            //     // Just print at a fixed spot (e.g., Row 12, Col 0) to test
+            //     *vga_buffer.offset(12 * 80) = 0x0f00 | (c as u16);
+            // }
+        }
+
+        // Send End of Interrupt (EOI) to the Master PIC
+        core::arch::asm!("out 0x20, al", in("al") 0x20u8);
     }
 }
