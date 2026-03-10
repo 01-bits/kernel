@@ -134,9 +134,9 @@
 //     asm!("out 0xA1, al", in("al") 0xFFu8);
 // }
 
-
-
 use core::{arch::asm, mem::size_of, ptr::addr_of};
+
+use crate::println;
 
 #[derive(Debug)]
 #[repr(C)]
@@ -151,10 +151,10 @@ pub struct InterruptStackFrame {
 #[derive(Clone, Copy)]
 #[repr(C, packed)]
 pub struct IdtEntry {
-    ptr_low: u16,  
-    selector: u16, 
-    ist: u8,       // Interrupt Stack Table (Must be 0 if unused)
-    access: u8,    
+    ptr_low: u16,
+    selector: u16,
+    ist: u8, // Interrupt Stack Table (Must be 0 if unused)
+    access: u8,
     ptr_mid: u16,
     ptr_high: u32,
     reserved: u32, // Must be 0 in 64-bit
@@ -180,7 +180,7 @@ impl IdtEntry {
         self.selector = 0x08; // Matches GDT64_CODE in your boot.asm
         self.ist = 0;
         self.reserved = 0;
-        self.access = 0x8E;   // Present, Ring 0, Interrupt Gate
+        self.access = 0x8E; // Present, Ring 0, Interrupt Gate
     }
 }
 
@@ -199,25 +199,16 @@ static mut IDT: IdtTable = IdtTable([IdtEntry::empty(); 256]);
 
 pub fn init() {
     unsafe {
-        // 1. Set Double Fault FIRST. If anything else fails, this catches it.
         IDT.0[8].set_handler(double_fault_handler as u64);
-        
-        // 2. Set Breakpoint handler
+
         IDT.0[3].set_handler(breakpoint_handler as u64);
+        IDT.0[0x21].set_handler(keyboard_handler as *const () as u64);
 
         let ptr = IdtPtr {
             limit: (size_of::<IdtTable>() - 1) as u16,
             base: addr_of!(IDT) as u64,
         };
-
-        // Load the IDT
         asm!("lidt [{}]", in(reg) &ptr);
-
-        // Visual confirmation that we reached this point
-        *(0xb800c as *mut u16) = 0x0f49; // 'I'
-        
-        // Trigger breakpoint to test
-        asm!("int 3");
     }
 }
 
@@ -226,18 +217,87 @@ pub extern "x86-interrupt" fn double_fault_handler(
     stack_frame: InterruptStackFrame,
     _error_code: u64,
 ) -> ! {
-    crate::println!("\nEXCEPTION: DOUBLE FAULT\n{:#?}", stack_frame);
+    crate::println!("\nEXCEPTION: DOUBLE FAULT");
+    // crate::println!("\nEXCEPTION: DOUBLE FAULT\n{:#?}", stack_frame);
     loop {
-        unsafe { asm!("hlt"); }
+        unsafe {
+            asm!("hlt");
+        }
     }
 }
 
 #[unsafe(no_mangle)]
 pub extern "x86-interrupt" fn breakpoint_handler(stack_frame: InterruptStackFrame) {
-    // Note: If crate::println crashes, it might be due to stack alignment 
-    // during the call. For now, we write directly to VGA to be sure.
-    unsafe {
-        *(0xb800e as *mut u16) = 0x0f21; // '!' 
+    // Print RIP on Row 15
+    print_hex_raw(stack_frame.instruction_pointer, 5, 0);
+
+    // Print CS on Row 16
+    print_hex_raw(stack_frame.code_segment, 6, 0);
+
+    // Print RSP on Row 17
+    print_hex_raw(stack_frame.stack_pointer, 7, 0);
+}
+
+pub fn print_hex_raw(val: u64, row: usize, col: usize) {
+    let buf = 0xb8000 as *mut u16;
+    let chars = b"0123456789ABCDEF";
+    let color = 0x0e00; // Yellow text
+
+    for i in 0..16 {
+        let nibble = (val >> ((15 - i) * 4)) & 0xf;
+        let character = chars[nibble as usize] as u16;
+        unsafe {
+            // Calculate position: (row * 80 + col + i)
+            let offset = (row * 80 + col + i) as isize;
+            *buf.offset(offset) = color | character;
+        }
     }
-    // crate::println!("\nEXCEPTION: BREAKPOINT\n{:#?}", stack_frame);
+}
+
+pub fn remap_pic() {
+    unsafe {
+        _remap_pic();
+        asm!("sti");
+    }
+}
+
+pub unsafe fn _remap_pic() {
+    unsafe {
+        // Initialization Command Word 1 (ICW1)
+        asm!("out 0x20, al", in("al") 0x11u8); // ware up
+        asm!("out 0xA0, al", in("al") 0x11u8); // ware up
+
+        // ICW2: Set offsets (IRQ 0-7 -> 0x20, IRQ 8-15 -> 0x28)
+        asm!("out 0x21, al", in("al") 0x20u8); // Master offset = 32 (0x20)
+        asm!("out 0xA1, al", in("al") 0x28u8); // Slave offset = 40 (0x28)
+
+        // ICW3: Wiring (Master/Slave connection)
+        asm!("out 0x21, al", in("al") 0x04u8);
+        asm!("out 0xA1, al", in("al") 0x02u8);
+
+        // ICW4: 8086 mode
+        asm!("out 0x21, al", in("al") 0x01u8);
+        asm!("out 0xA1, al", in("al") 0x01u8);
+
+        // Mask interrupts: Enable ONLY Keyboard (IRQ 1)
+        // 0xFD = 11111101b (bit 1 is 0, so IRQ 1 is enabled)
+        asm!("out 0x21, al", in("al") 0xFDu8);
+        asm!("out 0xA1, al", in("al") 0xFFu8);
+    }
+}
+
+#[unsafe(no_mangle)]
+pub extern "x86-interrupt" fn keyboard_handler(_stack_frame: InterruptStackFrame) {
+    unsafe {
+        // Read scancode from Port 0x60
+        let scancode: u8;
+        asm!("in al, 0x60", out("al") scancode);
+
+        // For now, just print the scancode hex raw so we know it works
+        print_hex_raw(scancode as u64, 10, 0);
+
+        // SEND EOI (End of Interrupt) to the PIC
+        // If you don't do this, the PIC will never send another interrupt!
+        asm!("out 0x20, al", in("al") 0x20u8);
+    }
 }

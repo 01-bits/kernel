@@ -8,24 +8,21 @@ pub mod vga;
 pub use vga::*;
 pub mod idt;
 pub use idt::*;
+pub mod gdt;
 pub mod macros;
+use core::arch::asm;
 use core::{fmt::Write, panic::PanicInfo};
 
 static HELLO: &[u8] = b"Hello Worldddd\n";
 
 #[unsafe(no_mangle)]
 pub extern "C" fn kmain() -> ! {
-    
-    unsafe {
-        // Mark entry
-        *(0xb8000 as *mut u16) = 0x0f31; // '1'
-        core::arch::asm!("cli");
-    }
-
-    
     println!("start booting");
+    gdt::init();
     idt::init();
-    println!("idt done");
+    println!("IDT an GDT done");
+    idt::remap_pic();
+    println!("Keyboard ready. Type something!");
     loop {}
 }
 
