@@ -42,7 +42,7 @@ pub fn handle_interrupt() {
 
             if let Some(c) = key {
                 print_info!("{}", c);
-                shell::
+                // shell::p
             }
         }
 

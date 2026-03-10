@@ -1,12 +1,12 @@
 use core::fmt::{Arguments, Write};
 
-use crate::sync::spin::Spinlock;
+use crate::{print_info, sync::spin::Spinlock};
 
 pub const VGA_WIDTH: usize = 80;
 pub const VGA_HEIGHT: usize = 25;
 pub const VGA_BUFFER_ADDR: usize = 0xb8000;
 
-pub const DEFAULT_COLOR: u8 = 0x0f ; // 0x0f; 
+pub const DEFAULT_COLOR: u8 = 0x0f; // 0x0f; 
 
 pub struct VgaWriter {
     pub row: usize,
@@ -66,6 +66,44 @@ impl VgaWriter {
         self.row = VGA_HEIGHT - 1;
         self.column = 0;
     }
+
+    pub fn clear(&mut self) {
+        unsafe {
+            let blank = (DEFAULT_COLOR as u16) << 8 | (b' ' as u16);
+            for i in 0..VGA_WIDTH * VGA_HEIGHT {
+                self.buf.add(i).write_volatile(blank);
+            }
+        }
+        self.row = 0;
+        self.column = 0;
+    }
+
+    pub fn backspace(&mut self) {
+        if self.column > 0 {
+            self.column -= 1;
+        } else if self.row > 0 {
+            self.row -= 1;
+            self.column = VGA_WIDTH - 1;
+        } else {
+            return;
+        }
+
+        let index = self.row * VGA_WIDTH + self.column;
+        let blank = (DEFAULT_COLOR as u16) << 8 | (b' ' as u16);
+        unsafe {
+            self.buf.add(index).write_volatile(blank);
+        }
+    }
+}
+
+pub fn clear_screen() {
+    let mut writer = WRITER.lock();
+    writer.clear();
+}
+
+pub fn backspace() {
+    let mut writer = WRITER.lock();
+    writer.backspace();
 }
 
 impl Write for VgaWriter {
@@ -87,7 +125,6 @@ pub static WRITER: Spinlock<VgaWriter> = Spinlock::new(VgaWriter {
     buf: 0xb8000 as *mut u16,
     color: DEFAULT_COLOR,
 });
-
 
 #[doc(hidden)]
 pub fn _print(args: Arguments, color: u8) {
