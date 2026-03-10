@@ -38,16 +38,16 @@ Linker script and memory map
 .text           0x0000000000007e00     0x1d5f
  *(.text .text.*)
  .text          0x0000000000007e00        0x0 target/x86_64-unknown-none/release/libkernel.a(kernel-f516bc03ffe9b977.kernel.1a6e78cceb18f4e-cgu.0.rcgu.o)
- .text._RNvMNtCs8NbPHFlkKg_6kernel3vgaNtB2_9VgaWriter8new_line
+ .text._RNvMNtNtCs8NbPHFlkKg_6kernel7drivers3vgaNtB2_9VgaWriter8new_line
                 0x0000000000007e00      0x371 target/x86_64-unknown-none/release/libkernel.a(kernel-f516bc03ffe9b977.kernel.1a6e78cceb18f4e-cgu.0.rcgu.o)
  *fill*         0x0000000000008171        0xf 
- .text._RNvXs_NtCs8NbPHFlkKg_6kernel3vgaNtB4_9VgaWriterNtNtCsdkwDDN9ROji_4core3fmt5Write9write_str
+ .text._RNvXs_NtNtCs8NbPHFlkKg_6kernel7drivers3vgaNtB4_9VgaWriterNtNtCsdkwDDN9ROji_4core3fmt5Write9write_str
                 0x0000000000008180       0x8b target/x86_64-unknown-none/release/libkernel.a(kernel-f516bc03ffe9b977.kernel.1a6e78cceb18f4e-cgu.0.rcgu.o)
  *fill*         0x000000000000820b        0x5 
- .text._RNvYNtNtCs8NbPHFlkKg_6kernel3vga9VgaWriterNtNtCsdkwDDN9ROji_4core3fmt5Write10write_charB6_
+ .text._RNvYNtNtNtCs8NbPHFlkKg_6kernel7drivers3vga9VgaWriterNtNtCsdkwDDN9ROji_4core3fmt5Write10write_charB8_
                 0x0000000000008210      0x107 target/x86_64-unknown-none/release/libkernel.a(kernel-f516bc03ffe9b977.kernel.1a6e78cceb18f4e-cgu.0.rcgu.o)
  *fill*         0x0000000000008317        0x9 
- .text._RNvYNtNtCs8NbPHFlkKg_6kernel3vga9VgaWriterNtNtCsdkwDDN9ROji_4core3fmt5Write9write_fmtB6_
+ .text._RNvYNtNtNtCs8NbPHFlkKg_6kernel7drivers3vga9VgaWriterNtNtCsdkwDDN9ROji_4core3fmt5Write9write_fmtB8_
                 0x0000000000008320        0xb target/x86_64-unknown-none/release/libkernel.a(kernel-f516bc03ffe9b977.kernel.1a6e78cceb18f4e-cgu.0.rcgu.o)
  *fill*         0x000000000000832b        0x5 
  .text.breakpoint_handler
@@ -92,13 +92,13 @@ Linker script and memory map
  *(.rodata .rodata.*)
  .rodata._RNvMsa_NtCsdkwDDN9ROji_4core3fmtNtB5_9Formatter3pad
                 0x0000000000009b60       0x10 target/x86_64-unknown-none/release/libkernel.a(kernel-f516bc03ffe9b977.kernel.1a6e78cceb18f4e-cgu.0.rcgu.o)
- .rodata._RNvNtCs8NbPHFlkKg_6kernel3gdt3GDT
+ .rodata._RNvNtNtCs8NbPHFlkKg_6kernel4arch3gdt3GDT
                 0x0000000000009b70       0x18 target/x86_64-unknown-none/release/libkernel.a(kernel-f516bc03ffe9b977.kernel.1a6e78cceb18f4e-cgu.0.rcgu.o)
  .rodata.cst16  0x0000000000009b88       0x20 target/x86_64-unknown-none/release/libkernel.a(kernel-f516bc03ffe9b977.kernel.1a6e78cceb18f4e-cgu.0.rcgu.o)
- .rodata..Lanon.815952bc744f841e4d2e7ca7ce594118.7
-                0x0000000000009ba8       0x19 target/x86_64-unknown-none/release/libkernel.a(kernel-f516bc03ffe9b977.kernel.1a6e78cceb18f4e-cgu.0.rcgu.o)
  .rodata.str1.1
-                0x0000000000009bc1        0x2 target/x86_64-unknown-none/release/libkernel.a(kernel-f516bc03ffe9b977.kernel.1a6e78cceb18f4e-cgu.0.rcgu.o)
+                0x0000000000009ba8        0x2 target/x86_64-unknown-none/release/libkernel.a(kernel-f516bc03ffe9b977.kernel.1a6e78cceb18f4e-cgu.0.rcgu.o)
+ .rodata..Lanon.815952bc744f841e4d2e7ca7ce594118.8
+                0x0000000000009baa       0x19 target/x86_64-unknown-none/release/libkernel.a(kernel-f516bc03ffe9b977.kernel.1a6e78cceb18f4e-cgu.0.rcgu.o)
  .rodata.cst32  0x0000000000009bc3       0x20 target/x86_64-unknown-none/release/libkernel.a(kernel-f516bc03ffe9b977.kernel.1a6e78cceb18f4e-cgu.0.rcgu.o)
  *fill*         0x0000000000009be3        0x1 
  .rodata..Lswitch.table.keyboard_handler
@@ -106,7 +106,7 @@ Linker script and memory map
 
 .data           0x0000000000009c90       0x58
  *(.data .data.*)
- .data._RNvNtCs8NbPHFlkKg_6kernel3vga6WRITER
+ .data._RNvNtNtCs8NbPHFlkKg_6kernel7drivers3vga6WRITER
                 0x0000000000009c90       0x28 target/x86_64-unknown-none/release/libkernel.a(kernel-f516bc03ffe9b977.kernel.1a6e78cceb18f4e-cgu.0.rcgu.o)
  .data.rel.ro..Lanon.815952bc744f841e4d2e7ca7ce594118.1
                 0x0000000000009cb8       0x30 target/x86_64-unknown-none/release/libkernel.a(kernel-f516bc03ffe9b977.kernel.1a6e78cceb18f4e-cgu.0.rcgu.o)
@@ -124,7 +124,7 @@ Linker script and memory map
 .bss            0x0000000000009d10     0x1000
                 0x0000000000009d10                __bss_start = .
  *(.bss .bss.*)
- .bss._RNvNtCs8NbPHFlkKg_6kernel3idt3IDT
+ .bss._RNvNtNtCs8NbPHFlkKg_6kernel4arch3idt3IDT
                 0x0000000000009d10     0x1000 target/x86_64-unknown-none/release/libkernel.a(kernel-f516bc03ffe9b977.kernel.1a6e78cceb18f4e-cgu.0.rcgu.o)
  *(COMMON)
                 0x000000000000ad10                __bss_end = .

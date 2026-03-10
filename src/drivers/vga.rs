@@ -1,6 +1,6 @@
 use core::fmt::{Arguments, Write};
 
-use crate::spin::Spinlock;
+use crate::sync::spin::Spinlock;
 
 pub const VGA_WIDTH: usize = 80;
 pub const VGA_HEIGHT: usize = 25;
