@@ -50,9 +50,8 @@ Linker script and memory map
                 0x0000000000008640                double_fault_handler
  *fill*         0x0000000000008713        0xd 
  .text.keyboard_handler
-                0x0000000000008720       0xcc target/x86_64-unknown-none/release/libkernel.a(kernel-f516bc03ffe9b977.kernel.1a6e78cceb18f4e-cgu.0.rcgu.o)
+                0x0000000000008720       0xd0 target/x86_64-unknown-none/release/libkernel.a(kernel-f516bc03ffe9b977.kernel.1a6e78cceb18f4e-cgu.0.rcgu.o)
                 0x0000000000008720                keyboard_handler
- *fill*         0x00000000000087ec        0x4 
  .text.kmain    0x00000000000087f0      0x712 target/x86_64-unknown-none/release/libkernel.a(kernel-f516bc03ffe9b977.kernel.1a6e78cceb18f4e-cgu.0.rcgu.o)
                 0x00000000000087f0                kmain
  *fill*         0x0000000000008f02        0x2 
