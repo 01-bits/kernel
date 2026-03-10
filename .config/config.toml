@@ -5,4 +5,7 @@ target = "x86_64-unknown-none"
 rustflags = [
     "-C", "code-model=kernel",
     "-C", "relocation-model=static",
+    "-C", "no-red-zone",
+    "-C", "target-feature=-mmx,-sse,+soft-float",
+    "-C", "target-feature=-sse,+soft-float",
 ]

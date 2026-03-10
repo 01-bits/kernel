@@ -1,5 +1,5 @@
 [BITS 16]
-section .boot
+section .boot_entry
 global start
 extern kmain
 
@@ -14,7 +14,7 @@ start:
     ; --- STEP 0: LOAD RUST FROM DISK ---
     ; BIOS only loads 512 bytes. We need to load the rest!
     mov ah, 0x02    ; BIOS read sectors
-    mov al, 10      ; Read 10 sectors (5KB)
+    mov al, 60      ; Read 10 sectors (5KB)
     mov ch, 0x00    ; Cylinder 0
     mov dh, 0x00    ; Head 0
     mov cl, 0x02    ; Start at sector 2
@@ -60,13 +60,25 @@ PModeMain:
 
     ; --- Paging Setup ---
     mov edi, 0x1000
-    mov ecx, 3072
+    mov ecx, 1024 * 3
     xor eax, eax
     rep stosd       
 
-    mov dword [0x1000], 0x2003      
-    mov dword [0x2000], 0x3003      
-    mov dword [0x3000], 0x00000083  
+    ; mov dword [0x1000], 0x2003      
+    ; mov dword [0x2000], 0x3003      
+    ; mov dword [0x3000], 0x00000083  
+
+    ; PML4 [0] points to PDP at 0x2000
+    mov dword [0x1000], 0x2003
+    mov dword [0x1004], 0         ; Explicitly zero upper bits
+
+    ; PDP [0] points to PD at 0x3000
+    mov dword [0x2000], 0x3003
+    mov dword [0x2004], 0         ; Explicitly zero upper bits
+
+    ; PD [0] points to 0x0000 (2MB Huge Page)
+    mov dword [0x3000], 0x00000083
+    mov dword [0x3004], 0         ; Explicitly zero upper bits
 
     mov eax, cr4
     or eax, 1 << 5                  
@@ -92,7 +104,7 @@ align 16
 gdt64_start:
     dq 0x0 
 gdt64_code:
-    dq (1<<43) | (1<<44) | (1<<47) | (1<<53) 
+    dq 0x00af9a000000ffff
 gdt64_data:
     dq (1<<41) | (1<<44) | (1<<47)           
 gdt64_end:
@@ -104,6 +116,8 @@ gdt64_descriptor:
 [BITS 64]
 LongModeMain:
     mov rax, 0x0a340a36
-    mov [0xb8004], rax  
+    mov [0xb8004], rax
+    mov rsp, 0xA000
+    and rsp, -16
     call kmain
     hlt

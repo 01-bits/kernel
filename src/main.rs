@@ -1,28 +1,28 @@
 #![no_std]
 #![no_main]
+#![feature(abi_x86_interrupt)]
 
 pub mod spin;
 pub use spin::*;
 pub mod vga;
 pub use vga::*;
+pub mod idt;
+pub use idt::*;
 pub mod gdt;
-pub use gdt::*;
 pub mod macros;
-use core::panic::PanicInfo;
+use core::arch::asm;
+use core::{fmt::Write, panic::PanicInfo};
 
 static HELLO: &[u8] = b"Hello Worldddd\n";
 
 #[unsafe(no_mangle)]
 pub extern "C" fn kmain() -> ! {
-    println!("System Booting...");
-    println!("VGA Buffer: 0x{:x}", 0xb8000);
-    
-    for i in 0..30 {
-        println!("This is line number {}", i);
-    }
-    init();
-    println!("GDT Initialized!");
-
+    println!("start booting");
+    gdt::init();
+    idt::init();
+    println!("IDT an GDT done");
+    idt::remap_pic();
+    println!("Keyboard ready. Type something!");
     loop {}
 }
 

@@ -6,7 +6,7 @@ pub const VGA_WIDTH: usize = 80;
 pub const VGA_HEIGHT: usize = 25;
 pub const VGA_BUFFER_ADDR: usize = 0xb8000;
 
-pub const DEFAULT_COLOR: u8 = 0x0f;
+pub const DEFAULT_COLOR: u8 = 0x0f ; // 0x0f; 
 
 pub struct VgaWriter {
     pub row: usize,
@@ -16,6 +16,14 @@ pub struct VgaWriter {
 }
 
 impl VgaWriter {
+    pub fn new() -> Self {
+        Self {
+            row: 0,
+            column: 0,
+            buf: 0xb8000 as *mut u16,
+            color: DEFAULT_COLOR,
+        }
+    }
     pub fn write_byte(&mut self, byte: u8, color: u8) {
         let index = self.row * VGA_WIDTH + self.column;
 
@@ -80,6 +88,7 @@ pub static WRITER: Spinlock<VgaWriter> = Spinlock::new(VgaWriter {
     color: DEFAULT_COLOR,
 });
 
+
 #[doc(hidden)]
 pub fn _print(args: Arguments, color: u8) {
     use core::fmt::Write;
@@ -87,7 +96,6 @@ pub fn _print(args: Arguments, color: u8) {
     writer.color = color;
     writer.write_fmt(args).unwrap();
 }
-
 
 pub enum Color {
     Success = 0x02,
