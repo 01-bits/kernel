@@ -113,6 +113,12 @@ gdt64_descriptor:
     dw gdt64_end - gdt64_start - 1
     dq gdt64_start
 
+section .stack
+align 16
+stack_bottom:
+    resb 16384 ; Reserve 16KB for the stack
+stack_top:
+
 [BITS 64]
 LongModeMain:
     mov ax, 0x10      ; Load Data Segment
@@ -123,7 +129,7 @@ LongModeMain:
     mov ss, ax
 
     
-    mov rsp, 0x80000
+    mov rsp, stack_top
     and rsp, -16
     call kmain
     hlt

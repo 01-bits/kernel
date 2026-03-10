@@ -40,5 +40,9 @@ SECTIONS
         __bss_end = .;
     }
 
+    .stack : {
+        *(.stack)
+    }
+
     /DISCARD/ : { *(.comment) *(.eh_frame) *(.note*) }
 }
