@@ -199,9 +199,9 @@ static mut IDT: IdtTable = IdtTable([IdtEntry::empty(); 256]);
 
 pub fn init() {
     unsafe {
-        IDT.0[8].set_handler(double_fault_handler as u64);
+        IDT.0[8].set_handler(double_fault_handler as *const () as u64);
 
-        IDT.0[3].set_handler(breakpoint_handler as u64);
+        IDT.0[3].set_handler(breakpoint_handler as *const () as u64);
         IDT.0[0x21].set_handler(keyboard_handler as *const () as u64);
 
         let ptr = IdtPtr {
@@ -214,7 +214,7 @@ pub fn init() {
 
 #[unsafe(no_mangle)]
 pub extern "x86-interrupt" fn double_fault_handler(
-    stack_frame: InterruptStackFrame,
+    _stack_frame: InterruptStackFrame,
     _error_code: u64,
 ) -> ! {
     crate::println!("\nEXCEPTION: DOUBLE FAULT");

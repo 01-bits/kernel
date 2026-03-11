@@ -1,6 +1,6 @@
 use core::fmt::{Arguments, Write};
 
-use crate::{print_info, sync::spin::Spinlock};
+use crate::{sync::spin::Spinlock};
 
 pub const VGA_WIDTH: usize = 80;
 pub const VGA_HEIGHT: usize = 25;
@@ -8,6 +8,7 @@ pub const VGA_BUFFER_ADDR: usize = 0xb8000;
 
 pub const DEFAULT_COLOR: u8 = 0x0f; // 0x0f; 
 
+#[derive(Default)]
 pub struct VgaWriter {
     pub row: usize,
     pub column: usize,

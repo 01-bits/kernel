@@ -1,0 +1,188 @@
+Archive member included to satisfy reference by file (symbol)
+
+target/x86_64-unknown-none/release/libkernel.a(kernel-f516bc03ffe9b977.kernel.99f6ef792b9a533b-cgu.0.rcgu.o)
+                              build/boot.o (kmain)
+target/x86_64-unknown-none/release/libkernel.a(compiler_builtins-5a0f38241443cdfd.compiler_builtins.5b2e98b61a4fdb9e-cgu.279.rcgu.o)
+                              target/x86_64-unknown-none/release/libkernel.a(kernel-f516bc03ffe9b977.kernel.99f6ef792b9a533b-cgu.0.rcgu.o) (memcpy)
+
+Discarded input sections
+
+ .comment       0x0000000000000000       0x69 target/x86_64-unknown-none/release/libkernel.a(kernel-f516bc03ffe9b977.kernel.99f6ef792b9a533b-cgu.0.rcgu.o)
+ .note.GNU-stack
+                0x0000000000000000        0x0 target/x86_64-unknown-none/release/libkernel.a(kernel-f516bc03ffe9b977.kernel.99f6ef792b9a533b-cgu.0.rcgu.o)
+ .llvmbc        0x0000000000000000      0xc6c target/x86_64-unknown-none/release/libkernel.a(compiler_builtins-5a0f38241443cdfd.compiler_builtins.5b2e98b61a4fdb9e-cgu.279.rcgu.o)
+ .llvmcmd       0x0000000000000000        0x0 target/x86_64-unknown-none/release/libkernel.a(compiler_builtins-5a0f38241443cdfd.compiler_builtins.5b2e98b61a4fdb9e-cgu.279.rcgu.o)
+ .comment       0x0000000000000000       0x35 target/x86_64-unknown-none/release/libkernel.a(compiler_builtins-5a0f38241443cdfd.compiler_builtins.5b2e98b61a4fdb9e-cgu.279.rcgu.o)
+ .note.GNU-stack
+                0x0000000000000000        0x0 target/x86_64-unknown-none/release/libkernel.a(compiler_builtins-5a0f38241443cdfd.compiler_builtins.5b2e98b61a4fdb9e-cgu.279.rcgu.o)
+
+Memory Configuration
+
+Name             Origin             Length             Attributes
+*default*        0x0000000000000000 0xffffffffffffffff
+
+Linker script and memory map
+
+                0x0000000000007c00                . = 0x7c00
+
+.boot           0x0000000000007c00      0x122
+ *(.boot_entry)
+ .boot_entry    0x0000000000007c00      0x122 build/boot.o
+                0x0000000000007c00                start
+                0x0000000000007dfe                . = 0x7dfe
+
+.sig            0x0000000000007dfe        0x2
+                0x0000000000007dfe        0x2 SHORT 0xaa55
+                0x0000000000007e00                . = 0x7e00
+
+.text           0x0000000000007e00     0x1fff
+ *(.text .text.*)
+ .text          0x0000000000007e00        0x0 target/x86_64-unknown-none/release/libkernel.a(kernel-f516bc03ffe9b977.kernel.99f6ef792b9a533b-cgu.0.rcgu.o)
+ .text._ZN4core3fmt5Write10write_char17h5b9ebad13e008b00E
+                0x0000000000007e00      0x107 target/x86_64-unknown-none/release/libkernel.a(kernel-f516bc03ffe9b977.kernel.99f6ef792b9a533b-cgu.0.rcgu.o)
+ *fill*         0x0000000000007f07        0x9 
+ .text._ZN4core3fmt5Write9write_fmt17h93e943199b081c73E
+                0x0000000000007f10        0x5 target/x86_64-unknown-none/release/libkernel.a(kernel-f516bc03ffe9b977.kernel.99f6ef792b9a533b-cgu.0.rcgu.o)
+ *fill*         0x0000000000007f15        0xb 
+ .text._ZN68_$LT$kernel..drivers..vga..VgaWriter$u20$as$u20$core..fmt..Write$GT$9write_str17haa3ebc01fcf75929E
+                0x0000000000007f20       0x8b target/x86_64-unknown-none/release/libkernel.a(kernel-f516bc03ffe9b977.kernel.99f6ef792b9a533b-cgu.0.rcgu.o)
+ *fill*         0x0000000000007fab        0x5 
+ .text._ZN6kernel7drivers3vga9VgaWriter8new_line17haec83771bbcadb09E
+                0x0000000000007fb0      0x371 target/x86_64-unknown-none/release/libkernel.a(kernel-f516bc03ffe9b977.kernel.99f6ef792b9a533b-cgu.0.rcgu.o)
+ *fill*         0x0000000000008321        0xf 
+ .text.breakpoint_handler
+                0x0000000000008330      0x50c target/x86_64-unknown-none/release/libkernel.a(kernel-f516bc03ffe9b977.kernel.99f6ef792b9a533b-cgu.0.rcgu.o)
+                0x0000000000008330                breakpoint_handler
+ *fill*         0x000000000000883c        0x4 
+ .text.double_fault_handler
+                0x0000000000008840       0xe3 target/x86_64-unknown-none/release/libkernel.a(kernel-f516bc03ffe9b977.kernel.99f6ef792b9a533b-cgu.0.rcgu.o)
+                0x0000000000008840                double_fault_handler
+ *fill*         0x0000000000008923        0xd 
+ .text.keyboard_handler
+                0x0000000000008930      0x736 target/x86_64-unknown-none/release/libkernel.a(kernel-f516bc03ffe9b977.kernel.99f6ef792b9a533b-cgu.0.rcgu.o)
+                0x0000000000008930                keyboard_handler
+ *fill*         0x0000000000009066        0xa 
+ .text.kmain    0x0000000000009070      0x3a2 target/x86_64-unknown-none/release/libkernel.a(kernel-f516bc03ffe9b977.kernel.99f6ef792b9a533b-cgu.0.rcgu.o)
+                0x0000000000009070                kmain
+ *fill*         0x0000000000009412        0xe 
+ .text._ZN4core3fmt5write17hfb5402f0e9edd597E
+                0x0000000000009420      0x2d1 target/x86_64-unknown-none/release/libkernel.a(kernel-f516bc03ffe9b977.kernel.99f6ef792b9a533b-cgu.0.rcgu.o)
+ *fill*         0x00000000000096f1        0xf 
+ .text.unlikely._ZN4core5slice5index16slice_index_fail17hbae6b85b2112d6bbE
+                0x0000000000009700        0x9 target/x86_64-unknown-none/release/libkernel.a(kernel-f516bc03ffe9b977.kernel.99f6ef792b9a533b-cgu.0.rcgu.o)
+ *fill*         0x0000000000009709        0x7 
+ .text.unlikely._ZN4core9panicking9panic_fmt17hfc6757002a16b8afE
+                0x0000000000009710        0x2 target/x86_64-unknown-none/release/libkernel.a(kernel-f516bc03ffe9b977.kernel.99f6ef792b9a533b-cgu.0.rcgu.o)
+ *fill*         0x0000000000009712        0xe 
+ .text._ZN4core3fmt9Formatter3pad17h37ec66c7dba0c3f6E
+                0x0000000000009720      0x5d7 target/x86_64-unknown-none/release/libkernel.a(kernel-f516bc03ffe9b977.kernel.99f6ef792b9a533b-cgu.0.rcgu.o)
+ *fill*         0x0000000000009cf7        0x9 
+ .text._ZN43_$LT$char$u20$as$u20$core..fmt..Display$GT$3fmt17h3a1e0e058a0ea53eE
+                0x0000000000009d00       0xb6 target/x86_64-unknown-none/release/libkernel.a(kernel-f516bc03ffe9b977.kernel.99f6ef792b9a533b-cgu.0.rcgu.o)
+ *fill*         0x0000000000009db6        0xa 
+ .text.unlikely._ZN4core6result13unwrap_failed17h3c3d4dc948745298E
+                0x0000000000009dc0        0x9 target/x86_64-unknown-none/release/libkernel.a(kernel-f516bc03ffe9b977.kernel.99f6ef792b9a533b-cgu.0.rcgu.o)
+ *fill*         0x0000000000009dc9        0x3 
+ .text          0x0000000000009dcc        0x0 target/x86_64-unknown-none/release/libkernel.a(compiler_builtins-5a0f38241443cdfd.compiler_builtins.5b2e98b61a4fdb9e-cgu.279.rcgu.o)
+ *fill*         0x0000000000009dcc        0x4 
+ .text.memcpy   0x0000000000009dd0       0x2f target/x86_64-unknown-none/release/libkernel.a(compiler_builtins-5a0f38241443cdfd.compiler_builtins.5b2e98b61a4fdb9e-cgu.279.rcgu.o)
+                0x0000000000009dd0                memcpy
+
+.iplt           0x0000000000009dff        0x0
+ .iplt          0x0000000000009dff        0x0 build/boot.o
+
+.rodata         0x0000000000009e00      0x19c
+ *(.rodata .rodata.*)
+ .rodata._ZN4core3fmt9Formatter3pad17h37ec66c7dba0c3f6E
+                0x0000000000009e00       0x10 target/x86_64-unknown-none/release/libkernel.a(kernel-f516bc03ffe9b977.kernel.99f6ef792b9a533b-cgu.0.rcgu.o)
+ .rodata._ZN6kernel4arch3gdt3GDT17h71df03ee865f287fE
+                0x0000000000009e10       0x18 target/x86_64-unknown-none/release/libkernel.a(kernel-f516bc03ffe9b977.kernel.99f6ef792b9a533b-cgu.0.rcgu.o)
+ .rodata.cst16  0x0000000000009e28       0x10 target/x86_64-unknown-none/release/libkernel.a(kernel-f516bc03ffe9b977.kernel.99f6ef792b9a533b-cgu.0.rcgu.o)
+ .rodata.str1.1
+                0x0000000000009e38        0x2 target/x86_64-unknown-none/release/libkernel.a(kernel-f516bc03ffe9b977.kernel.99f6ef792b9a533b-cgu.0.rcgu.o)
+ .rodata..Lanon.6b6753da00fff30b0f9a73a340a10364.4
+                0x0000000000009e3a       0x29 target/x86_64-unknown-none/release/libkernel.a(kernel-f516bc03ffe9b977.kernel.99f6ef792b9a533b-cgu.0.rcgu.o)
+ .rodata..Lanon.6b6753da00fff30b0f9a73a340a10364.5
+                0x0000000000009e63       0x1a target/x86_64-unknown-none/release/libkernel.a(kernel-f516bc03ffe9b977.kernel.99f6ef792b9a533b-cgu.0.rcgu.o)
+ .rodata..Lanon.6b6753da00fff30b0f9a73a340a10364.13
+                0x0000000000009e7d       0x19 target/x86_64-unknown-none/release/libkernel.a(kernel-f516bc03ffe9b977.kernel.99f6ef792b9a533b-cgu.0.rcgu.o)
+ .rodata..Lanon.6b6753da00fff30b0f9a73a340a10364.14
+                0x0000000000009e96       0x24 target/x86_64-unknown-none/release/libkernel.a(kernel-f516bc03ffe9b977.kernel.99f6ef792b9a533b-cgu.0.rcgu.o)
+ *fill*         0x0000000000009eba        0x2 
+ .rodata..Lswitch.table.keyboard_handler
+                0x0000000000009ebc       0xe0 target/x86_64-unknown-none/release/libkernel.a(kernel-f516bc03ffe9b977.kernel.99f6ef792b9a533b-cgu.0.rcgu.o)
+
+.data           0x0000000000009fa0       0x58
+ *(.data .data.*)
+ .data._ZN6kernel7drivers3vga6WRITER17hd0201560afdf0edfE
+                0x0000000000009fa0       0x28 target/x86_64-unknown-none/release/libkernel.a(kernel-f516bc03ffe9b977.kernel.99f6ef792b9a533b-cgu.0.rcgu.o)
+ .data.rel.ro..Lanon.6b6753da00fff30b0f9a73a340a10364.8
+                0x0000000000009fc8       0x30 target/x86_64-unknown-none/release/libkernel.a(kernel-f516bc03ffe9b977.kernel.99f6ef792b9a533b-cgu.0.rcgu.o)
+
+.got            0x0000000000009ff8        0x8
+ .got           0x0000000000009ff8        0x8 build/boot.o
+
+.got.plt        0x000000000000a000       0x18
+ .got.plt       0x000000000000a000       0x18 build/boot.o
+                0x000000000000a000                _GLOBAL_OFFSET_TABLE_
+
+.igot.plt       0x000000000000a018        0x0
+ .igot.plt      0x000000000000a018        0x0 build/boot.o
+
+.bss            0x000000000000a020     0x1050
+                0x000000000000a020                __bss_start = .
+ *(.bss .bss.*)
+ .bss._ZN6kernel4arch3idt3IDT17h92926a8122f4a627E
+                0x000000000000a020     0x1000 target/x86_64-unknown-none/release/libkernel.a(kernel-f516bc03ffe9b977.kernel.99f6ef792b9a533b-cgu.0.rcgu.o)
+ .bss._ZN6kernel5shell5ordis5SHELL17h84db134b36b5933aE
+                0x000000000000b020       0x50 target/x86_64-unknown-none/release/libkernel.a(kernel-f516bc03ffe9b977.kernel.99f6ef792b9a533b-cgu.0.rcgu.o)
+ *(COMMON)
+                0x000000000000b070                __bss_end = .
+
+.stack          0x000000000000b070     0x4022
+ *(.stack)
+ .stack         0x000000000000b070     0x4022 build/boot.o
+
+.rela.dyn       0x000000000000f098        0x0
+ .rela.got      0x000000000000f098        0x0 build/boot.o
+ .rela.iplt     0x000000000000f098        0x0 build/boot.o
+
+/DISCARD/
+ *(.comment)
+ *(.eh_frame)
+ *(.note*)
+LOAD build/boot.o
+LOAD target/x86_64-unknown-none/release/libkernel.a
+OUTPUT(build/kernel.elf elf64-x86-64)
+
+.debug_abbrev   0x0000000000000000      0x290
+ .debug_abbrev  0x0000000000000000      0x1e2 target/x86_64-unknown-none/release/libkernel.a(kernel-f516bc03ffe9b977.kernel.99f6ef792b9a533b-cgu.0.rcgu.o)
+ .debug_abbrev  0x00000000000001e2       0xae target/x86_64-unknown-none/release/libkernel.a(compiler_builtins-5a0f38241443cdfd.compiler_builtins.5b2e98b61a4fdb9e-cgu.279.rcgu.o)
+
+.debug_info     0x0000000000000000      0xfa2
+ .debug_info    0x0000000000000000      0xe8b target/x86_64-unknown-none/release/libkernel.a(kernel-f516bc03ffe9b977.kernel.99f6ef792b9a533b-cgu.0.rcgu.o)
+ .debug_info    0x0000000000000e8b      0x117 target/x86_64-unknown-none/release/libkernel.a(compiler_builtins-5a0f38241443cdfd.compiler_builtins.5b2e98b61a4fdb9e-cgu.279.rcgu.o)
+
+.debug_aranges  0x0000000000000000       0xb0
+ .debug_aranges
+                0x0000000000000000       0x80 target/x86_64-unknown-none/release/libkernel.a(kernel-f516bc03ffe9b977.kernel.99f6ef792b9a533b-cgu.0.rcgu.o)
+ .debug_aranges
+                0x0000000000000080       0x30 target/x86_64-unknown-none/release/libkernel.a(compiler_builtins-5a0f38241443cdfd.compiler_builtins.5b2e98b61a4fdb9e-cgu.279.rcgu.o)
+
+.debug_ranges   0x0000000000000000      0x960
+ .debug_ranges  0x0000000000000000      0x920 target/x86_64-unknown-none/release/libkernel.a(kernel-f516bc03ffe9b977.kernel.99f6ef792b9a533b-cgu.0.rcgu.o)
+ .debug_ranges  0x0000000000000920       0x40 target/x86_64-unknown-none/release/libkernel.a(compiler_builtins-5a0f38241443cdfd.compiler_builtins.5b2e98b61a4fdb9e-cgu.279.rcgu.o)
+
+.debug_str      0x0000000000000000     0x292a
+ .debug_str     0x0000000000000000     0x274d target/x86_64-unknown-none/release/libkernel.a(kernel-f516bc03ffe9b977.kernel.99f6ef792b9a533b-cgu.0.rcgu.o)
+                                       0x27ad (size before relaxing)
+ .debug_str     0x000000000000274d      0x1dd target/x86_64-unknown-none/release/libkernel.a(compiler_builtins-5a0f38241443cdfd.compiler_builtins.5b2e98b61a4fdb9e-cgu.279.rcgu.o)
+                                        0x26c (size before relaxing)
+
+.debug_frame    0x0000000000000000      0x370
+ .debug_frame   0x0000000000000000      0x340 target/x86_64-unknown-none/release/libkernel.a(kernel-f516bc03ffe9b977.kernel.99f6ef792b9a533b-cgu.0.rcgu.o)
+ .debug_frame   0x0000000000000340       0x30 target/x86_64-unknown-none/release/libkernel.a(compiler_builtins-5a0f38241443cdfd.compiler_builtins.5b2e98b61a4fdb9e-cgu.279.rcgu.o)
+
+.debug_line     0x0000000000000000      0xbf8
+ .debug_line    0x0000000000000000      0xa2d target/x86_64-unknown-none/release/libkernel.a(kernel-f516bc03ffe9b977.kernel.99f6ef792b9a533b-cgu.0.rcgu.o)
+ .debug_line    0x0000000000000a2d      0x1cb target/x86_64-unknown-none/release/libkernel.a(compiler_builtins-5a0f38241443cdfd.compiler_builtins.5b2e98b61a4fdb9e-cgu.279.rcgu.o)

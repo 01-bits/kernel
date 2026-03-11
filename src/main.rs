@@ -10,18 +10,16 @@ pub mod arch;
 pub mod macros;
 use core::panic::PanicInfo;
 
-static HELLO: &[u8] = b"Hello Worldddd\n";
+use crate::drivers::vga;
 
 #[unsafe(no_mangle)]
 pub extern "C" fn kmain() -> ! {
-    println!("start booting");
     arch::gdt::init();
     arch::idt::init();
-    println!("IDT an GDT done");
     arch::idt::remap_pic();
-    println!("Keyboard ready. Type something!");
-
-    
+    vga::clear_screen();
+    println!("Welcome to your Linux-style Kernel!");
+    print_info!("> ");
     loop {}
 }
 

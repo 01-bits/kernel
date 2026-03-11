@@ -1,4 +1,4 @@
-use crate::{arch::idt::InterruptStackFrame, print_info, println, shell};
+use crate::shell;
 
 pub fn handle_interrupt() {
     unsafe {
@@ -9,9 +9,9 @@ pub fn handle_interrupt() {
         // We only want to print on the "Press" event.
         if scancode & 0x80 == 0 {
             let key = match scancode {
-                // AZERTY letters (lowercase)
-                0x10 => Some('a'),
-                0x11 => Some('z'),
+                // Letters (AZERTY unshifted)
+                0x10 => Some('a'), // Q pos
+                0x11 => Some('z'), // W pos
                 0x12 => Some('e'),
                 0x13 => Some('r'),
                 0x14 => Some('t'),
@@ -29,15 +29,15 @@ pub fn handle_interrupt() {
                 0x24 => Some('j'),
                 0x25 => Some('k'),
                 0x26 => Some('l'),
-                0x2C => Some('m'),
-                0x2D => Some('w'),
-                0x2E => Some('x'),
-                0x2F => Some('c'),
-                0x30 => Some('v'),
-                0x31 => Some('b'),
-                0x32 => Some('n'),
+                0x27 => Some('m'),
+                0x2C => Some('w'),
+                0x2D => Some('x'),
+                0x2E => Some('c'),
+                0x2F => Some('v'),
+                0x30 => Some('b'),
+                0x31 => Some('n'),
 
-                // Numbers row (AZERTY: &123... etc, but unshifted numbers are above letters)
+                // Numbers & symbols (standard)
                 0x02 => Some('1'),
                 0x03 => Some('2'),
                 0x04 => Some('3'),
@@ -48,13 +48,10 @@ pub fn handle_interrupt() {
                 0x09 => Some('8'),
                 0x0A => Some('9'),
                 0x0B => Some('0'),
-
-                // Symbols (AZERTY positions)
                 0x0C => Some('°'),
-                0x0D => Some('+'),
-                0x0E => Some(8u8 as char), // Backspace!
+                0x0D => Some('-'),    // Often '-' not '+'; verify your KB
+                0x0E => Some('\x08'), // Backspace
                 0x0F => Some('^'),
-                0x27 => Some('ù'),
                 0x28 => Some('$'),
                 0x29 => Some('*'),
                 0x2B => Some('µ'),
@@ -78,4 +75,9 @@ pub fn handle_interrupt() {
         // Send End of Interrupt (EOI) to the Master PIC
         core::arch::asm!("out 0x20, al", in("al") 0x20u8);
     }
+}
+
+
+pub fn reboot() {
+    asm!
 }
